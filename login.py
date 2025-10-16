@@ -23,4 +23,6 @@ def show():
         # Store logged in state
         st.session_state["logged_in"] = True
         st.session_state["user_email"] = email
+        st.session_state["user_id"] = str(user["_id"])
+        st.session_state["user_name"] = user["name"]
         st.success(f"Welcome back, {user['name']}!")

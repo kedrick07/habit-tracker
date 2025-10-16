@@ -34,7 +34,7 @@ def create_user(name: str, email: str, password: str):
         "name": name,
         "email": email,
         "password": hashed_password,
-        "createdAt": datetime.utcnow()
+        "createdAt": datetime.now()
     }
     
     # Insert into MongoDB users collection
