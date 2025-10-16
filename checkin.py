@@ -1,11 +1,17 @@
 import streamlit as st
 from utils.database import get_user_habits, get_completions_collection
 from bson import ObjectId
-from datetime import datetime, date
+from datetime import datetime, date, time
+
 
 def is_completed_today(habit_id: str, check_date: date):
     """Check if habit was completed on specific date"""
     completions = get_completions_collection()
+    
+    # ✅ Convert date to datetime for MongoDB query
+    if isinstance(check_date, date) and not isinstance(check_date, datetime):
+        check_date = datetime.combine(check_date, time.min)
+    
     record = completions.find_one({
         "habit_id": ObjectId(habit_id),
         "completion_date": check_date,
@@ -13,9 +19,14 @@ def is_completed_today(habit_id: str, check_date: date):
     })
     return record is not None
 
+
 def mark_completion(habit_id: str, user_id: str, completion_date: date, completed: bool, note: str = ""):
     """Mark habit as complete or incomplete for a specific date"""
     completions = get_completions_collection()
+    
+    # ✅ Convert date to datetime for MongoDB
+    if isinstance(completion_date, date) and not isinstance(completion_date, datetime):
+        completion_date = datetime.combine(completion_date, time.min)
     
     # Check if completion already exists
     existing = completions.find_one({
@@ -38,15 +49,6 @@ def mark_completion(habit_id: str, user_id: str, completion_date: date, complete
             "logged_at": datetime.now()
         })
 
-def is_completed_today(habit_id: str, check_date: date):
-    """Check if habit was completed on specific date"""
-    completions = get_completions_collection()
-    record = completions.find_one({
-        "habit_id": ObjectId(habit_id),
-        "completion_date": check_date,
-        "completed": True
-    })
-    return record is not None
 
 def show():
     if "user_id" not in st.session_state:

@@ -3,7 +3,7 @@ from utils.database import create_habit, get_user_habits, update_habit, delete_h
 from datetime import datetime
 
 def show():
-    if " user_id" not in st.session_state:
+    if "user_id" not in st.session_state:
         st.error("Please login first")
         return
     
@@ -26,7 +26,7 @@ def show():
                     col1, col2 = st.columns(2)
 
                     with col1:
-                        if st.button("Edit", key=f"edit_{habit['id']}"):
+                        if st.button("Edit", key=f"edit_{habit['_id']}"):
                             st.session_state[f"editing_{habit['_id']}"] = True
                     
                     with col2:
@@ -58,7 +58,7 @@ def show():
     with tab2:
         with st.form("new_habit_form"):
             name = st.text_input("Habit Name *", placeholder="e.g., Morning Exercise")
-            category = st.selectbox("Category *"
+            category = st.selectbox("Category *",
                 ["Health", "Productivity", "Finance", "Learning", "Fitness", "Mindfulness", "Other"])
             description = st.text_area("Description", placeholder="Optional details about this habit")
             start_date = st.date_input("Start Date", value=datetime.now())

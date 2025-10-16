@@ -1,7 +1,7 @@
 import bcrypt
 import re
 from utils.database import get_users_collection
-import datetime
+from datetime import datetime, timezone
 
 def hash_password(password: str) -> str:
     password_bytes = password.encode('utf-8')
@@ -34,7 +34,7 @@ def create_user(name: str, email: str, password: str):
         "name": name,
         "email": email,
         "password": hashed_password,
-        "createdAt": datetime.now()
+        "createdAt": datetime.now(timezone.utc)
     }
     
     # Insert into MongoDB users collection

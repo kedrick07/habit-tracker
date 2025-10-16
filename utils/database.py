@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from bson import ObjectId
-from datetime import datetime
+from datetime import datetime, date
 import os
 
 # Load environment variables from .env file
@@ -56,19 +56,30 @@ def get_completions_collection():
 
 #function to create new habit
 def create_habit(user_id: str, name: str, category: str, description: str = "", start_date=None):
+    """Create a new habit for the user"""
     habits_collection = get_habits_collection()
-
+    
+    # ✅ FIX: Convert date to datetime for MongoDB
+    if start_date:
+        # If start_date is a datetime.date object, convert to datetime
+        if isinstance(start_date, date) and not isinstance(start_date, datetime):
+            start_date = datetime.combine(start_date, datetime.min.time())
+    else:
+        # Use current datetime
+        start_date = datetime.now()
+    
     habit_doc = {
         "user_id": ObjectId(user_id),
         "name": name,
         "category": category,
         "description": description,
-        "start_date": start_date or datetime.now().date(),
+        "start_date": start_date,  # ✅ Now it's datetime, not date
         "created_at": datetime.now()
     }
-
+    
     result = habits_collection.insert_one(habit_doc)
     return str(result.inserted_id)
+
 
 #function to get user habits
 def get_user_habits(user_id: str):
