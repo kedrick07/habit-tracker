@@ -1,0 +1,19 @@
+Project Hierarchy
+HABIT TRACKER CRUD APPLICATION
+├── __pycache__
+└── utils/
+    ├── __pycache__
+    ├── __init__.py
+    └── auth.py
+├── database.py
+├── .env
+├── .gitignore
+├── checkin.py
+├── dashboard.py
+├── environment.yml
+├── habit_tracker_docs.md
+├── home.py
+├── login.py
+├── manage_habits.py
+└── signup.py
+

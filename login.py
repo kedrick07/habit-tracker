@@ -2,7 +2,12 @@ import streamlit as st
 from utils.auth import verify_password, create_user 
 from utils.database import get_users_collection
 
+
 def show():
+    """
+    This function is now integrated into home.py
+    Keeping it here for backward compatibility if needed
+    """
     st.title("Login")
 
     email = st.text_input("Email")
@@ -26,3 +31,4 @@ def show():
         st.session_state["user_id"] = str(user["_id"])
         st.session_state["user_name"] = user["name"]
         st.success(f"Welcome back, {user['name']}!")
+        st.rerun()

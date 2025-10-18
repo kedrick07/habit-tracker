@@ -3,16 +3,19 @@ import re
 from utils.database import get_users_collection
 from datetime import datetime, timezone
 
+
 def hash_password(password: str) -> str:
     password_bytes = password.encode('utf-8')
     hashed_bytes = bcrypt.hashpw(password_bytes, bcrypt.gensalt())
     hashed_str = hashed_bytes.decode('utf-8')
     return hashed_str
 
+
 def verify_password(password: str, hashed: str) -> bool:
     password_bytes = password.encode('utf-8')
     hashed_bytes = hashed.encode('utf-8')
     return bcrypt.checkpw(password_bytes, hashed_bytes)
+
 
 def create_user(name: str, email: str, password: str):
     # Validate email format with regex

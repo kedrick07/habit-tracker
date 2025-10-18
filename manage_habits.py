@@ -2,6 +2,7 @@ import streamlit as st
 from utils.database import create_habit, get_user_habits, update_habit, delete_habit
 from datetime import datetime
 
+
 def show():
     if "user_id" not in st.session_state:
         st.error("Please login first")
@@ -16,7 +17,7 @@ def show():
         habits = get_user_habits(st.session_state["user_id"])
 
         if not habits:
-            st.info("No habits yet. Create your first babit in the 'Add New Habit' tab!")
+            st.info("No habits yet. Create your first habit in the 'Add New Habit' tab!")
         else:
             for habit in habits:
                 with st.expander(f"{habit['name']} ({habit['category']})"):
@@ -41,7 +42,8 @@ def show():
                             new_name = st.text_input("Name", value=habit['name'])
                             new_category = st.selectbox(
                                 "Category",
-                                ["Health", "Productivity", "Finance", "Learning", "Fitness", "Mindfulness", "Other"].index(habit['category'])
+                                ["Health", "Productivity", "Finance", "Learning", "Fitness", "Mindfulness", "Other"],
+                                index=["Health", "Productivity", "Finance", "Learning", "Fitness", "Mindfulness", "Other"].index(habit['category'])
                             )
                             new_desc = st.text_area("Description", value=habit['description'])
 
@@ -65,7 +67,7 @@ def show():
 
             if st.form_submit_button("Create Habit"):
                 if not name:
-                    st.error("Habitr name is required")
+                    st.error("Habit name is required")
                 else:
                     habit_id = create_habit(
                         st.session_state["user_id"],

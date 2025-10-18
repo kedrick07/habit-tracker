@@ -4,18 +4,22 @@ from bson import ObjectId
 from datetime import datetime, date
 import os
 
+
 # Load environment variables from .env file
 load_dotenv()
+
 
 # Get MongoDB connection string from environment variables
 MONGODB_URI = os.getenv("MONGODB_URI")
 DB_NAME = os.getenv("DB_NAME")
+
 
 # Check if environment variables are loaded
 if not MONGODB_URI:
     raise ValueError("MONGODB_URI not found in environment variables. Check your .env file!")
 if not DB_NAME:
     raise ValueError("DB_NAME not found in environment variables. Check your .env file!")
+
 
 def get_database():
     """
@@ -33,12 +37,14 @@ def get_database():
         print(f"❌ Error connecting to MongoDB: {e}")
         return None
 
+
 def get_users_collection():
     """
     Returns the users collection
     """
     db = get_database()
     return db['users']
+
 
 def get_habits_collection():
     """
@@ -47,12 +53,14 @@ def get_habits_collection():
     db = get_database()
     return db['habits']
 
+
 def get_completions_collection():
     """
     Returns the completions collection
     """
     db = get_database()
     return db['completions']
+
 
 #function to create new habit
 def create_habit(user_id: str, name: str, category: str, description: str = "", start_date=None):
@@ -87,6 +95,7 @@ def get_user_habits(user_id: str):
     habits = habits_collection.find({"user_id": ObjectId(user_id)})
     return list(habits)
 
+
 #function to update habits
 def update_habit(habit_id: str, user_id: str, updates: dict):
     habits_collection = get_habits_collection()
@@ -95,6 +104,7 @@ def update_habit(habit_id: str, user_id: str, updates: dict):
         {"$set": updates}
     )
     return result.modified_count > 0
+
 
 #function to delete habit and all its components
 def delete_habit(habit_id: str, user_id: str):
